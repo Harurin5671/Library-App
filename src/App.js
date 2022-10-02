@@ -5,6 +5,14 @@ import Form from './components/Form';
 
 function App() {
 
+const [book, setBook] = useState({
+  titulo: "",
+  autor: "",
+  edicion: 0
+});
+
+const [listUpdated, setListUpdated] = useState(false);
+
   const [books, setBooks] = useState([]);
   useEffect(() => {
     const getBooks = () => {
@@ -13,7 +21,8 @@ function App() {
         .then(books => setBooks(books));
     }
     getBooks();
-  },[]);
+    setListUpdated(false);
+  },[listUpdated]);
 
   return (
     <div className="App">
@@ -22,11 +31,11 @@ function App() {
         <div className='row'>
           <div className='col-7'>
             <h2 style={{textAlign: "center"}}>Book List</h2>
-            <BookList books={books} />
+            <BookList setBook={setBook} book={book} books={books} setListUpdated={setListUpdated}/>
           </div>
           <div className='col-5'>
           <h2 style={{textAlign: "center"}}>Book Form</h2>
-          <Form />
+          <Form book={book} setBook={setBook}/>
           </div>
         </div>
       </div>
