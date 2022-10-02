@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import BookList from './components/BookList';
+import Nav from './components/Nav';
+import Form from './components/Form';
 
 function App() {
+
+  const [books, setBooks] = useState([]);
+  useEffect(() => {
+    const getBooks = () => {
+      fetch(`http://localhost:9000/api`)
+        .then(response => response.json())
+        .then(books => setBooks(books));
+    }
+    getBooks();
+  },[]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Nav brand="Library App"/>
+      <div className='container'>
+        <div className='row'>
+          <div className='col-7'>
+            <h2 style={{textAlign: "center"}}>Book List</h2>
+            <BookList books={books} />
+          </div>
+          <div className='col-5'>
+          <h2 style={{textAlign: "center"}}>Book Form</h2>
+          <Form />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
